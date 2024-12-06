@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <h1>Task Manager</h1>
+
+    <!-- Add a new task -->
+    <h2>Add Task</h2>
+    <form action="/tasks" method="POST">
+        <input type="text" name="description" placeholder="Task Description" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Display all tasks -->
+    <h2>Tasks</h2>
+    <ul>
+        <% tasks.forEach(task=> { %>
+            <li>
+                <%= task.description %> - <%= task.status %>
+                        <form action="/tasks/<%= task.id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+            </li>
+            <% }); %>
+    </ul>
+
+    <!-- Add a new user -->
+    <h2>Add User</h2>
+    <form action="/users" method="POST">
+        <input type="text" name="name" placeholder="User Name" required>
+        <input type="email" name="email" placeholder="User Email" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <!-- Display all users -->
+    <h2>Users</h2>
+    <ul>
+        <% users.forEach(user=> { %>
+            <li>
+                <%= user.name %> - <%= user.email %>
+                        <form action="/users/<%= user.id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+            </li>
+            <% }); %>
+    </ul>
+
+    <!-- Add a new project -->
+    <h2>Add Project</h2>
+    <form action="/projects" method="POST">
+        <input type="text" name="name" placeholder="Project Name" required>
+        <input type="text" name="description" placeholder="Project Description" required>
+        <button type="submit">Add Project</button>
+    </form>
+
+    <!-- Display all projects -->
+    <h2>Projects</h2>
+    <ul>
+        <% projects.forEach(project=> { %>
+            <li>
+                <%= project.name %> - <%= project.description %>
+                        <form action="/projects/<%= project.id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+            </li>
+            <% }); %>
+    </ul>
+</body>
+
+</html>
