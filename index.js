@@ -1,39 +1,30 @@
+const mongoose = require('mongoose')
+require('dotenv').config()
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-
-// Import routes
 const taskRoutes = require('./routes/tasks')
 const userRoutes = require('./routes/users')
 const projectRoutes = require('./routes/projects')
 
 const app = express()
-const PORT = process.env.PORT || 3001 // Use port 3001 if no environment variable is set
+const PORT = process.env.PORT || 3001
 
 // Middleware
-app.use(bodyParser.json()) // Parse JSON request bodies
-app.use(bodyParser.urlencoded({ extended: true })) // Parse form data
-app.use(express.static('public')) // Serve static files (e.g., index.html, styles.css)
-app.set('view engine', 'ejs') // Set EJS as the template engine
-
-// Override methods for DELETE/PATCH in forms
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
 app.use(methodOverride('_method'))
 
-// Custom middleware to log requests
-app.use((req, res, next) => {
-  console.log(`${req.method} request to ${req.url}`)
-  next()
-})
-
-// In-memory data for rendering the EJS views
-let tasks = []
-let users = []
-let projects = []
-
-// Home route to render EJS views
-app.get('/', (req, res) => {
-  res.render('index', { tasks, users, projects })
-})
+// Connect to MongoDB with Mongoose
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('Connected to MongoDB with Mongoose'))
+  .catch((err) => console.error('Database connection error:', err))
 
 // Routes
 app.use('/tasks', taskRoutes)
